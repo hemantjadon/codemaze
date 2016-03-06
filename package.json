@@ -12,6 +12,7 @@
     "es6-shim": "^0.33.13",
     "gulp": "^3.9.1",
     "gulp-less": "^3.0.5",
+    "gulp-minify": "0.0.5",
     "gulp-typescript": "^2.12.1",
     "gulp-watch": "^4.3.5",
     "less": "^2.6.1",

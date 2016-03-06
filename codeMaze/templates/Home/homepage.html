@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+   <head lang="en">
+       <title>Codemaze 2016</title>
+       <meta charset="utf-8">
+       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link href={% static "Home/css/homepage.css" %}/ type="text/css" rel="stylesheet">
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+   </head>
+   <body>
+       <div class="ribbon">
+       </div>
+       <div class="outerBox">
+           {% if contest != "begin" %}
+           <header>
+               <div class="nav">
+                   <img src={% static "images/algosoc-logo.min.png" %} height="100px" width="100px">
+               </div>
+               <h2>Code Maze - 2016</h2>
+               <h5>Hold on Tight, Contest begins at <br/> March 7, 9pm </h5>
+           </header>
+           <h4>Before starting .. Gear Up ..<br/> Catch up With the <a href="#">Instructions</a>.</h4>
+           {% endif %}
+       </div>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+       <script src={% static "Home/js/homepage.js" %} type="text/javascript"></script>
+   </body>
+</html>
