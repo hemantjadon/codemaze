@@ -135,8 +135,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-
+'''
 STATIC_URL = '/dist/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR,'dist'),
+)
+
+'''
 
 AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
     'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
@@ -160,7 +166,3 @@ STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 # Tell the staticfiles app to use S3Boto storage when writing the collected static files (when
 # you run `collectstatic`).
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR,'dist'),
-)
