@@ -16,7 +16,7 @@ gulp.task('compile-less', function () {
     console.log(config.jsOutputPath);
     return gulp.src([config.allLessFiles])
         .pipe(less({
-            plugins: [autoprefix, cleancss]
+            plugins: [autoprefix]
         }))
         .pipe(gulp.dest(config.lessOutputPath));
 });
