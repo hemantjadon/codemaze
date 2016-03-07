@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var watch = require('gulp-watch');
+
 var minify = require('gulp-minify');
+var babel = require("gulp-babel");
 
 var less = require('gulp-less');
 var LessPluginCleanCSS = require('less-plugin-clean-css');
@@ -21,15 +23,26 @@ gulp.task('compile-less', function () {
 
 gulp.task('minify-js',function () {
      return gulp.src([config.allJsFiles])
-        .pipe(minify({ }))
+        .pipe(minify({}))
         .pipe(gulp.dest(config.jsOutputPath));
 });
 
+gulp.task('transpile-jsx', function () {
+    console.log(config.allJSXFiles);
+  return gulp.src(config.allJSXFiles)
+    .pipe(babel({
+        presets: ['react']
+      }))
+    .pipe(minify({}))
+    .pipe(gulp.dest(config.jsxOutputPath));
+});
+
 gulp.task('watch',function () {
-    watch([config.allLessFiles,config.allJsFiles],function(){
+    watch([config.allLessFiles,config.allJsFiles,config.allJSXFiles],function(){
         gulp.start('compile-less');
         gulp.start('minify-js');
+        gulp.start('transpile-jsx');
     });
 });
 
-gulp.task('default',['compile-less','minify-js','watch']);
+gulp.task('default',['compile-less','minify-js','transpile-jsx','watch']);
