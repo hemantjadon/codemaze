@@ -70,7 +70,7 @@ ROOT_URLCONF = 'codeMaze.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates','codeMaze/templates'],
+        'DIRS': ['templates','codeMaze/templates','codeMaze/codeMaze/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
