@@ -1,5 +1,7 @@
+boto==2.39.0
 defusedxml==0.4.1
 Django==1.9.4
+django-storages==1.4
 oauthlib==1.0.3
 PyJWT==1.4.0
 python-social-auth==0.2.14
