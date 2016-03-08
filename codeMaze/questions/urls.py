@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^submit/$',QuestionSubmit,name='question_submit'),
     url(r'^leaderboard/$',GetLeaderBoard,name='leader_board'),
     url(r'^stats/$',GetStats,name='get_stats'),
+    url(r'^winpage/$',WinPage,name='win_page'),
 ]

@@ -18,7 +18,8 @@ class UserProfile(models.Model):#-------------------Profile Of User
     ques =  models.ForeignKey(Question,blank=False,null=True)
     time_counter = models.IntegerField(default=0)
     points = models.IntegerField(default=0)
+    win = models.BooleanField(default=False)
     def __str__(self):
         return "%s's Profile"%self.user.__str__()
     class Meta:
-        ordering = ['-points']
+        ordering = ['-points','time_counter']

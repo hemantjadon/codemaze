@@ -7,10 +7,14 @@ from users.models import *
 from questions.models import *
 from django.conf import settings
 from datetime import datetime
+from django.utils.dateformat import format
+
 # Create your views here.
 @login_required(login_url='/')
 def QuestionsPage(request):
     if request.user.registered:
+        if request.user.user_profile.win == True:
+            return redirect(reverse('win_page'))
         return render(request,'Questions/questionspage.html',{"contest":settings.CONTEST})
     else:
         return redirect(reverse('register_page'))
@@ -48,17 +52,25 @@ def QuestionSubmit(request):
                     user_ques.save()
                     request.user.user_profile.points += user_ques.points
                     now = datetime.now()
-                    print(datetime)
+                    now_time = int(format(now, 'U')) + 19800
+                    #base_time = 1457449200; #3pm
+                    base_time = 1457438400
+                    current_time_counter = request.user.user_profile.time_counter
+                    time_taken = now_time-base_time-current_time_counter
+                    request.user.user_profile.time_counter = request.user.user_profile.time_counter+time_taken
+                    request.user.user_profile.save() 
                     if user_ques.next != None:
                         request.user.user_profile.ques = user_ques.next
                         request.user.user_profile.save()
+                        return JsonResponse({'status':'success',"message":"You got it right"})
                     else:
+                        request.user.user_profile.win = True
                         request.user.user_profile.save()
-                    return JsonResponse({'status':'success',"message":"You got it right"});
+                        return JsonResponse({'status':'success','message':'win'})
                 else:
                     user_ques.fail += 1
                     user_ques.save()
-                    return JsonResponse({'status':'fail',"message":"Oops, this is not correct"});
+                    return JsonResponse({'status':'fail',"message":"Oops, this is not correct"})
             else:
                 return JsonResponse({'error':'Submission to wrong question.'})
         except KeyError:
@@ -88,3 +100,9 @@ def GetStats(request):
         accuracy = str(math.ceil(ac*1000)/1000)+"%"
     return JsonResponse({"success":success,"fail":fail,"attempts":attempts,"accuracy":accuracy})
     
+@login_required(login_url='/')
+def WinPage(request):
+    if (request.user.user_profile.win == True):
+        return render(request,'Home/winpage.html',{})
+    else:
+        return redirect(reverse('questions_page'))
