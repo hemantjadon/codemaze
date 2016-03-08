@@ -23,7 +23,6 @@ var QuestionBox = React.createClass({
 
     fetchQuestion: function () {
         var ajaxUrl = window.location.origin + this.props.url;
-        console.log(ajaxUrl);
         $.ajax({
             url: ajaxUrl,
             dataType: 'json',
@@ -53,8 +52,9 @@ var QuestionBox = React.createClass({
                 headers: { 'X-CSRF-Token': csrf_token },
                 dataType: 'json',
                 success: function (response) {
+                    console.log(response);
                     if (response.status === 'success') {
-                        QuestionBox.fetchQuestion();
+                        window.location.reload();
                     } else if (response.status === 'fail') {
                         var input = $('#content .card .card-action .input-field input#answer');
                         var label = $('#content .card .card-action .input-field label[for=answer]');
@@ -148,7 +148,7 @@ var Answer = React.createClass({
                     React.createElement('input', { id: 'answer', type: 'text', className: 'validate' }),
                     React.createElement(
                         'label',
-                        { 'data-success': 'right', 'data-error': 'Oops, this is not correct !!', htmlFor: 'answer' },
+                        { 'data-error': 'Oops, this is not correct !!', htmlFor: 'answer' },
                         'Answer'
                     )
                 ),
@@ -163,6 +163,188 @@ var Answer = React.createClass({
 });
 
 ReactDOM.render(React.createElement(QuestionBox, { url: '/questions/get/' }), document.getElementById('content'));
+
+var LeaderBoard = React.createClass({
+    displayName: 'LeaderBoard',
+
+    getInitialState: function () {
+        return { list: [] };
+    },
+
+    fetchLeaders: function () {
+        var ajaxUrl = window.location.origin + this.props.url;
+        $.ajax({
+            url: ajaxUrl,
+            dataType: 'json',
+            cache: false,
+            success: function (list) {
+                this.setState({ list: list });
+            }.bind(this),
+
+            error: function (xhr, status, err) {
+                console.log(xhr);
+            }.bind(this)
+        });
+    },
+
+    componentDidMount: function () {
+        this.fetchLeaders();
+        setInterval(this.fetchLeaders, 120000);
+    },
+
+    render: function () {
+        var list = this.state.list['list'];
+        if (list !== undefined) {
+            return React.createElement(
+                'div',
+                { className: 'outerBox' },
+                React.createElement(
+                    'div',
+                    { className: 'card grey lighten-5' },
+                    React.createElement(
+                        'div',
+                        { className: 'card-content' },
+                        React.createElement(
+                            'span',
+                            { className: 'card-title' },
+                            React.createElement(
+                                'h4',
+                                null,
+                                'Leader Board'
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'card-action' },
+                        React.createElement(
+                            'ul',
+                            { className: 'collection' },
+                            list.map(function (name, index) {
+                                return React.createElement(
+                                    'li',
+                                    { className: 'collection-item', key: index },
+                                    index + 1,
+                                    '.  ',
+                                    name
+                                );
+                            })
+                        )
+                    )
+                )
+            );
+        } else {
+            return React.createElement('div', null);
+        }
+    }
+});
+
+ReactDOM.render(React.createElement(LeaderBoard, { url: '/questions/leaderboard/' }), document.getElementById('leaderboard'));
+
+var Stats = React.createClass({
+    displayName: 'Stats',
+
+    getInitialState: function () {
+        return { stats: {} };
+    },
+
+    fetchStats: function () {
+        var ajaxUrl = window.location.origin + this.props.url;
+        $.ajax({
+            url: ajaxUrl,
+            dataType: 'json',
+            cache: false,
+            success: function (stats) {
+                this.setState({ stats: stats });
+                console.log(stats);
+            }.bind(this),
+
+            error: function (xhr, status, err) {
+                console.log(xhr);
+            }.bind(this)
+        });
+    },
+
+    componentDidMount: function () {
+        this.fetchStats();
+    },
+
+    render: function () {
+        stats = this.state.stats;
+        return React.createElement(
+            'div',
+            { className: 'outerBox' },
+            React.createElement(
+                'div',
+                { className: 'card grey lighten-5' },
+                React.createElement(
+                    'div',
+                    { className: 'card-content' },
+                    React.createElement(
+                        'span',
+                        { className: 'card-title' },
+                        React.createElement(
+                            'h4',
+                            null,
+                            'Statistics'
+                        )
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'card-action' },
+                    React.createElement(
+                        'ul',
+                        { className: 'collection' },
+                        React.createElement(
+                            'li',
+                            { className: 'collection-item attempts' },
+                            'Attempts ',
+                            React.createElement(
+                                'span',
+                                { className: 'right' },
+                                stats.attempts
+                            )
+                        ),
+                        React.createElement(
+                            'li',
+                            { className: 'collection-item success' },
+                            'Success ',
+                            React.createElement(
+                                'span',
+                                { className: 'right' },
+                                stats.success
+                            )
+                        ),
+                        React.createElement(
+                            'li',
+                            { className: 'collection-item fail' },
+                            'Failure ',
+                            React.createElement(
+                                'span',
+                                { className: 'right' },
+                                stats.fail
+                            )
+                        ),
+                        React.createElement(
+                            'li',
+                            { className: 'collection-item accuracy' },
+                            'Accuracy ',
+                            React.createElement(
+                                'span',
+                                { className: 'right' },
+                                stats.accuracy,
+                                '%'
+                            )
+                        )
+                    )
+                )
+            )
+        );
+    }
+});
+
+ReactDOM.render(React.createElement(Stats, { url: '/questions/stats/' }), document.getElementById('stats'));
 
 marked.setOptions({
     langPrefix: "language-",

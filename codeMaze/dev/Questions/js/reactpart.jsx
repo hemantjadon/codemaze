@@ -21,7 +21,6 @@ var QuestionBox = React.createClass({
     
     fetchQuestion: function(){
         var ajaxUrl = window.location.origin+this.props.url;
-        console.log(ajaxUrl)
         $.ajax({
             url: ajaxUrl,
             dataType: 'json',
@@ -51,8 +50,9 @@ var QuestionBox = React.createClass({
                 headers: { 'X-CSRF-Token': csrf_token },
                 dataType: 'json',
                 success: function (response) { 
+                    console.log(response);
                     if(response.status === 'success'){
-                        QuestionBox.fetchQuestion();
+                        window.location.reload();
                     }
                     else if (response.status === 'fail'){
                         var input = $('#content .card .card-action .input-field input#answer');
@@ -127,7 +127,7 @@ var Answer = React.createClass({
                     <input type="hidden" className="csrf" value={csrftoken}/>
                     <div className="input-field">
                             <input id="answer" type="text" className="validate" />
-                            <label data-success="right" data-error="Oops, this is not correct !!" htmlFor="answer">Answer</label>
+                            <label data-error="Oops, this is not correct !!" htmlFor="answer">Answer</label>
                     </div>
                     <button className="submit-button btn-floating btn-large waves-effect waves-light" type="submit">
                         <i className="fa fa-chevron-right"></i>
@@ -138,7 +138,116 @@ var Answer = React.createClass({
     },    
 });
 
-ReactDOM.render(<QuestionBox url="/questions/get/"/>,document.getElementById('content'))
+ReactDOM.render(<QuestionBox url="/questions/get/"/>,document.getElementById('content'));
+
+
+var LeaderBoard = React.createClass({
+    getInitialState: function(){
+        return {list:[]};
+    },
+    
+    fetchLeaders: function(){
+        var ajaxUrl = window.location.origin+this.props.url;
+        $.ajax({
+            url: ajaxUrl,
+            dataType: 'json',
+            cache: false,
+            success: function(list){
+                this.setState({list:list});
+            }.bind(this),
+            
+            error: function(xhr, status, err) {
+                console.log(xhr);
+            }.bind(this),
+        });
+    },
+    
+    componentDidMount: function(){
+        this.fetchLeaders();
+        setInterval(this.fetchLeaders,120000);
+    },
+    
+    render: function(){
+        var list = this.state.list['list'];
+        if(list !== undefined){
+            return (
+                <div className="outerBox">
+                    <div className="card grey lighten-5">
+                        <div className="card-content">
+                            <span className="card-title">
+                                <h4>Leader Board</h4>
+                            </span>
+                        </div>
+                        <div className="card-action">
+                            <ul className="collection">
+                            {list.map(function(name, index){
+                                return <li className="collection-item" key={ index }>{index+1}.&nbsp;&nbsp;{name}</li>;
+                            })}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        else{
+            return(<div></div>);
+        }
+    },
+});
+
+ReactDOM.render(<LeaderBoard url="/questions/leaderboard/"/>,document.getElementById('leaderboard'));
+
+var Stats = React.createClass({
+    getInitialState: function(){
+        return {stats:{}};
+    },
+    
+    fetchStats: function(){
+        var ajaxUrl = window.location.origin+this.props.url;
+        $.ajax({
+            url: ajaxUrl,
+            dataType: 'json',
+            cache: false,
+            success: function(stats){
+                this.setState({stats:stats});
+                console.log(stats)
+            }.bind(this),
+            
+            error: function(xhr, status, err) {
+                console.log(xhr);
+            }.bind(this),
+        });
+    },
+    
+    componentDidMount: function(){
+        this.fetchStats();
+    },
+    
+    render: function(){
+        stats = this.state.stats;
+        return (
+              <div className="outerBox">
+                <div className="card grey lighten-5">
+                    <div className="card-content">
+                        <span className="card-title">
+                            <h4>Statistics</h4>
+                        </span>
+                    </div>
+                    <div className="card-action">
+                        <ul className="collection">
+                            <li className="collection-item attempts">Attempts <span className="right">{stats.attempts}</span></li>
+                            <li className="collection-item success">Success <span className="right">{stats.success}</span></li>
+                            <li className="collection-item fail">Failure <span className="right">{stats.fail}</span></li>
+                            <li className="collection-item accuracy">Accuracy <span className="right">{stats.accuracy}%</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        );
+    },
+});
+
+ReactDOM.render(<Stats url="/questions/stats/"/>,document.getElementById('stats'));
 
 marked.setOptions({
   langPrefix: "language-",
