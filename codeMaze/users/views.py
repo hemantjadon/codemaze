@@ -31,3 +31,6 @@ def RegisterPage(request):
             return redirect(reverse('questions_page'))
         else:
             return render(request,"Home/registerpage.html",{"colg_form":colg_form})
+            
+def InstructionsPage(request):
+    return render(request,"Home/instructionspage.html",{})

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+   <head lang="en">
+       <title>CodeMaze 2016</title>
+       <link rel="shortcut icon" href={% static "images/algosoc-logo.min.ico" %} />
+       <meta charset="utf-8">
+       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+       <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+       <link href={% static "Home/css/instructionspage.css" %}/ type="text/css" rel="stylesheet">
+       <style>body{background-color:#fafafa}body .ribbon{width:100vw;height:3px;position:absolute;top:0;left:0;background-color:#F44336}body .card{margin-top:150px;max-width:800px;margin-left:auto;margin-right:auto}body .card div.ui-button{position:absolute;right:-15px;top:-15px}body .card .card-content span.card-title{font-size:2.5em}body .card .card-action ul{list-style:disc;padding-left:25px}body .card .card-action ul li{list-style:disc}</style>
+       <body>
+           <div class="ribbon">
+           </div>
+           
+           <div class="container">
+               <div class="row">
+                    <div class="col s12">
+                    <div class="card grey lighten-5">
+                        <div class="ui-button btn-floating btn-large waves-effect waves-light red">
+                            <i class="fa fa-file-text-o"></i>
+                        </div>
+                        <div class="card-content black-text">
+                        <span class="card-title">Instructions</span>
+                        </div>
+                        <div class="card-action">
+                            <ul>
+                                <li>There will be a number of mathemetical questions.</li>
+                                <li>You can proceed to next question only after correctly answering the first one.</li>
+                                <li>Each question has 100 points and tie breaker will be based on time taken for solving the questions</li>
+                                <li>You need to have your Innovision-Id for collecting prizes in future.</li>
+                                <li>Unfair means will lead to disqualification.</li>
+                                <li>This is a single member event.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+           </div>
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+       </body>
+   </head>
+</html>

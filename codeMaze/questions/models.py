@@ -6,6 +6,7 @@ class Question(models.Model):
     title = models.CharField(max_length=100,blank=False,null=True)
     content = models.TextField(blank=False,null=True)
     answer = models.CharField(max_length=50,blank=False,null=True)
+    filepath = models.CharField(max_length=200,blank=True,null=True)
     points = models.IntegerField(default=0)
     root = models.BooleanField(default=False)
     leaf = models.BooleanField(default=False)

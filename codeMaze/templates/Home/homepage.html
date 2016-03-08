@@ -25,8 +25,8 @@
                   </div>
                    <div class="card-content black-text">
                        <h4 class="card-title">CodeMaze - 2016</h4>
-                       {% if contest == "begin" %}
-                            <h5 class="card-discription">Hold on Tight, Contest begins <br/> tonight at 9pm </h5>
+                       {% if contest != "begin" %}
+                            <h5 class="card-discription">Hold on Tight, Contest begins <br/> today at 2pm </h5>
                        {% else %}
                             <div class="loginBox">
                                 <span>Sign in with &nbsp;&nbsp;: &nbsp;&nbsp;</span>
@@ -41,7 +41,7 @@
                        {%  endif %}
                    </div>
                    <div class="card-footer">
-                       <h4>Before starting .. Gear Up ..<br/> Catch up With the <a href="#">Instructions</h4>
+                       <h4>Before starting .. Gear Up ..<br/> Catch up With the <a href={% url "instructions_page" %}>Instructions</h4>
                    </div>
                </div>
                </div>

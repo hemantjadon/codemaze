@@ -16,6 +16,7 @@ def QuestionsPage(request):
         return redirect(reverse('register_page'))
 
 @csrf_exempt
+@login_required(login_url='/')
 def QuestionGet(request):
     if request.is_ajax():
         ques = request.user.user_profile.ques
@@ -23,11 +24,13 @@ def QuestionGet(request):
         question['title'] = ques.title
         question['content'] = ques.content
         question['id'] = ques.pk
-        question['success'] = ques.success
-        question['fail'] = ques.fail
+        if(ques.filepath != None):
+            question['filepath'] = ques.filepath
+            
         return JsonResponse(question)
 
 @csrf_exempt
+@login_required(login_url='/')
 def QuestionSubmit(request):
     if request.is_ajax():
         string = request.body.decode('utf-8')
@@ -72,7 +75,7 @@ def GetLeaderBoard(request):
 
 
 import math
-
+@login_required(login_url='/')
 def GetStats(request):
     user_ques = request.user.user_profile.ques
     success = user_ques.success
