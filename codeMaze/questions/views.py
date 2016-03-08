@@ -6,7 +6,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt, csrf_p
 from users.models import *
 from questions.models import *
 from django.conf import settings
-
+from datetime import datetime
 # Create your views here.
 @login_required(login_url='/')
 def QuestionsPage(request):
@@ -24,9 +24,7 @@ def QuestionGet(request):
         question['title'] = ques.title
         question['content'] = ques.content
         question['id'] = ques.pk
-        if(ques.filepath != None):
-            question['filepath'] = ques.filepath
-            
+        question['filepath'] = ques.filepath
         return JsonResponse(question)
 
 @csrf_exempt
@@ -49,6 +47,8 @@ def QuestionSubmit(request):
                     user_ques.success += 1
                     user_ques.save()
                     request.user.user_profile.points += user_ques.points
+                    now = datetime.now()
+                    print(datetime)
                     if user_ques.next != None:
                         request.user.user_profile.ques = user_ques.next
                         request.user.user_profile.save()
@@ -81,7 +81,10 @@ def GetStats(request):
     success = user_ques.success
     fail = user_ques.fail
     attempts = success+fail
-    ac = success/attempts*100
-    accuracy = math.ceil(ac*1000)/1000
+    if attempts == 0:
+        accuracy = "-"
+    else:
+        ac = success/attempts*100
+        accuracy = str(math.ceil(ac*1000)/1000)+"%"
     return JsonResponse({"success":success,"fail":fail,"attempts":attempts,"accuracy":accuracy})
     

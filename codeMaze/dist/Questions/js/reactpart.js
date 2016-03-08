@@ -99,33 +99,69 @@ var Question = React.createClass({
                 return { __html: rawMarkup };
             }
         };
-        return React.createElement(
-            'div',
-            { className: 'outerBox' },
-            React.createElement(
+        filepath = question.filepath;
+        if (filepath === undefined || filepath === null || filepath === '') {
+            return React.createElement(
                 'div',
-                { className: 'card grey lighten-5' },
+                { className: 'outerBox' },
                 React.createElement(
                     'div',
-                    { className: 'card-content' },
+                    { className: 'card grey lighten-5' },
                     React.createElement(
-                        'span',
-                        { className: 'card-title' },
+                        'div',
+                        { className: 'card-content' },
                         React.createElement(
-                            'h4',
-                            null,
-                            this.props.question.title
-                        )
+                            'span',
+                            { className: 'card-title' },
+                            React.createElement(
+                                'h4',
+                                null,
+                                this.props.question.title
+                            )
+                        ),
+                        React.createElement('div', { dangerouslySetInnerHTML: rawMarkup(), className: 'markedBox' })
                     ),
-                    React.createElement('div', { dangerouslySetInnerHTML: rawMarkup(), className: 'markedBox' })
-                ),
+                    React.createElement(
+                        'div',
+                        { className: 'card-action' },
+                        React.createElement(Answer, { qid: this.props.question.id })
+                    )
+                )
+            );
+        } else {
+            return React.createElement(
+                'div',
+                { className: 'outerBox' },
                 React.createElement(
                     'div',
-                    { className: 'card-action' },
-                    React.createElement(Answer, { qid: this.props.question.id })
+                    { className: 'card grey lighten-5' },
+                    React.createElement(
+                        'div',
+                        { className: 'card-content' },
+                        React.createElement(
+                            'span',
+                            { className: 'card-title' },
+                            React.createElement(
+                                'h4',
+                                null,
+                                this.props.question.title
+                            ),
+                            React.createElement(
+                                'a',
+                                { download: true, href: filepath },
+                                React.createElement('i', { className: 'fa fa-download' })
+                            )
+                        ),
+                        React.createElement('div', { dangerouslySetInnerHTML: rawMarkup(), className: 'markedBox' })
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'card-action' },
+                        React.createElement(Answer, { qid: this.props.question.id })
+                    )
                 )
-            )
-        );
+            );
+        }
     }
 });
 
@@ -333,8 +369,7 @@ var Stats = React.createClass({
                             React.createElement(
                                 'span',
                                 { className: 'right' },
-                                stats.accuracy,
-                                '%'
+                                stats.accuracy
                             )
                         )
                     )

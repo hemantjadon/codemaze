@@ -16,6 +16,7 @@ class UserProfile(models.Model):#-------------------Profile Of User
     user = models.OneToOneField(AuthUser,blank=False,related_name='user_profile')
     college = models.CharField(max_length=50,blank=False,null=True)
     ques =  models.ForeignKey(Question,blank=False,null=True)
+    time_counter = models.IntegerField(default=0)
     points = models.IntegerField(default=0)
     def __str__(self):
         return "%s's Profile"%self.user.__str__()

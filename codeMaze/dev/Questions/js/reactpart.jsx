@@ -98,22 +98,43 @@ var Question = React.createClass({
                 return { __html: rawMarkup };
             }
         }
-        return (
-            <div className="outerBox">
-                <div className="card grey lighten-5">
-                    <div className="card-content">
-                        <span className="card-title">
-                            <h4>{this.props.question.title}</h4>
-                        </span>
-                        <div dangerouslySetInnerHTML={rawMarkup()} className="markedBox">
+        filepath = question.filepath
+        if (filepath === undefined || filepath===null || filepath === ''){
+            return (
+                <div className="outerBox">
+                    <div className="card grey lighten-5">
+                        <div className="card-content">
+                            <span className="card-title">
+                                <h4>{this.props.question.title}</h4>
+                            </span>
+                            <div dangerouslySetInnerHTML={rawMarkup()} className="markedBox">
+                            </div>
+                        </div>
+                        <div className="card-action">
+                            <Answer qid={this.props.question.id}/>
                         </div>
                     </div>
-                    <div className="card-action">
-                        <Answer qid={this.props.question.id}/>
+                </div>
+            );
+        }
+        else{
+            return (
+                <div className="outerBox">
+                    <div className="card grey lighten-5">
+                        <div className="card-content">
+                            <span className="card-title">
+                                <h4>{this.props.question.title}</h4><a download href={filepath}><i className="fa fa-download"></i></a>
+                            </span>
+                            <div dangerouslySetInnerHTML={rawMarkup()} className="markedBox">
+                            </div>
+                        </div>
+                        <div className="card-action">
+                            <Answer qid={this.props.question.id}/>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }, 
 });
 
@@ -238,7 +259,7 @@ var Stats = React.createClass({
                             <li className="collection-item attempts">Attempts <span className="right">{stats.attempts}</span></li>
                             <li className="collection-item success">Success <span className="right">{stats.success}</span></li>
                             <li className="collection-item fail">Failure <span className="right">{stats.fail}</span></li>
-                            <li className="collection-item accuracy">Accuracy <span className="right">{stats.accuracy}%</span></li>
+                            <li className="collection-item accuracy">Accuracy <span className="right">{stats.accuracy}</span></li>
                         </ul>
                     </div>
                 </div>
